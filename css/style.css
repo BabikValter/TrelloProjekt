@@ -1,0 +1,16 @@
+.boardDiv{
+    width: 20% !important;
+    height: 120px;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    background-color: #8b8b8b;
+    border-radius: 15px;
+    text-align: center;
+
+}

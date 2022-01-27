@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your boards</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://trello.com/1/client.js?key=d4a5989b18dace3a754d639147cb8ec5"></script>
+</head>
+<body>
+    <script>
+        let response = Trello.members.get("me/boards", {fields: "name", token: "f7175da98a1b18433418d845f69276d179c06608fa1faf14046b94a74f00fed0"});
+        let json = response["responseJSON"];
+        console.log(json);
+    </script>
+</body>
+</html>

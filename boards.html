@@ -18,14 +18,16 @@
         fetch("https://api.trello.com/1/members/me/boards?fields=name&key=d4a5989b18dace3a754d639147cb8ec5&token=f7175da98a1b18433418d845f69276d179c06608fa1faf14046b94a74f00fed0").then(response => response.json()).then(data => boards(data));;
 
         function boards(data){
-            console.log(data);
             let row = document.getElementById("boards");
             data.forEach(board => {
                 let div = document.createElement("div");
                 div.classList.add("boardDiv");
+                let a = document.createElement("a");
+                a.href = "./boardview.html?id=" + board["id"];
                 let h4 = document.createElement("h4");
                 h4.innerHTML = board["name"];
-                div.appendChild(h4);
+                a.appendChild(h4);
+                div.appendChild(a);
                 row.appendChild(div);
             });
         }

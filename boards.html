@@ -15,7 +15,10 @@
     </div>
 
     <script>
-        fetch("https://api.trello.com/1/members/me/boards?fields=name&key=d4a5989b18dace3a754d639147cb8ec5&token=f7175da98a1b18433418d845f69276d179c06608fa1faf14046b94a74f00fed0").then(response => response.json()).then(data => boards(data));;
+        
+        const params = new URLSearchParams(window.location.search)
+        const token = params.get("token");
+        fetch("https://api.trello.com/1/members/me/boards?fields=name&key=d4a5989b18dace3a754d639147cb8ec5&token=" + token).then(response => response.json()).then(data => boards(data));;
 
         function boards(data){
             let row = document.getElementById("boards");
@@ -23,7 +26,7 @@
                 let div = document.createElement("div");
                 div.classList.add("boardDiv");
                 let a = document.createElement("a");
-                a.href = "./boardview.html?id=" + board["id"];
+                a.href = "./boardview.html?id=" + board["id"] + "&token=" + token;
                 let h4 = document.createElement("h4");
                 h4.innerHTML = board["name"];
                 a.appendChild(h4);

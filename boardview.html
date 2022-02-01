@@ -13,38 +13,53 @@
 
     </div>
 
+
+    <template id="listTemplate">
+        <div class="list">
+            <h2></h2>
+        </div>
+    </template>
+
+    <template id="cardTemplate">
+        <div class="card">
+            <h4></h4>
+            <button class="btn btn-danger">Törlés</button>
+        </div>
+    </template>
     <script>
                 const params = new URLSearchParams(window.location.search)
                 const tableId = params.get("id");
-                fetch("https://api.trello.com/1/boards/" + tableId + "/lists?key=d4a5989b18dace3a754d639147cb8ec5&token=f7175da98a1b18433418d845f69276d179c06608fa1faf14046b94a74f00fed0").then(response => response.json()).then(data => lists(data));
+                const token = params.get("token");
+                fetch("https://api.trello.com/1/boards/" + tableId + "/lists?key=d4a5989b18dace3a754d639147cb8ec5&token=" + token).then(response => response.json()).then(data => lists(data));
 
                 function lists(data){
-
-                    let container = document.getElementById("lists");
-                    let listIndex = 0;
+                    let template = document.getElementById("listTemplate");
+                    let div = template.content.querySelector("div");
                     data.forEach(list => {
-                        let div = document.createElement("div");
-                        let h2 = document.createElement("h2");
+                        let imp = document.importNode(div, true);
+                        let h2 = imp.querySelector("h2");
                         h2.innerHTML = list["name"];
-                        div.appendChild(h2);
-                        div.classList.add("list");
-                        div.id = listIndex;
-                        container.appendChild(div);
-                        fetch("https://api.trello.com/1/lists/" + list["id"] + "/cards/?key=d4a5989b18dace3a754d639147cb8ec5&token=f7175da98a1b18433418d845f69276d179c06608fa1faf14046b94a74f00fed0").then(response => response.json()).then(data => cards(data, div));
-                        listIndex += 1;
+                        document.getElementById("lists").appendChild(imp);;
+                        fetch("https://api.trello.com/1/lists/" + list["id"] + "/cards/?key=d4a5989b18dace3a754d639147cb8ec5&token=" + token).then(response => response.json()).then(data => cards(data, imp));
                     });
                 }
 
                 function cards(data, list){
+                    let template = document.getElementById("cardTemplate");
+                    let div = template.content.querySelector("div.card");
                     data.forEach(card => {
-                        console.log(card);
-                        let div = document.createElement("div");
-                        div.classList.add("card");
-                        let text = document.createElement("h4");
-                        text.innerHTML = card["name"];
-                        div.appendChild(text);
-                        list.appendChild(div);
+                        let imp = document.importNode(div, true);
+                        let h4 = imp.querySelector("h4");
+                        h4.innerHTML = card["name"];
+                        let button = imp.querySelector("button");
+                        console.log(card["id"]);
+                        button.onclick = deleteCard(card["id"]);
+                        list.appendChild(imp);
                     });
+                }//itt járt Bálint 8)
+
+                function deleteCard(cardID){
+                    fetch("https://api.trello.com/1/cards/" + cardID, {method: 'DELETE'}).then(response => response.json()).then(data => console.log(data));;
                 }
     </script>
 </body>

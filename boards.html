@@ -15,9 +15,13 @@
     </div>
 
     <script>
-        
+
         const params = new URLSearchParams(window.location.search)
         const token = params.get("token");
+        let spl = window.location.href.split("/")
+        if(spl[spl.length - 1].split("#").length > 1){
+            window.location.href = window.location.href.replace("#", "?");
+        }
         fetch("https://api.trello.com/1/members/me/boards?fields=name&key=d4a5989b18dace3a754d639147cb8ec5&token=" + token).then(response => response.json()).then(data => boards(data));;
 
         function boards(data){

@@ -46,7 +46,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" id="modalSave">Save changes</button>
+              <button type="button" class="btn btn-primary" id="modalEdit">Save changes</button>
             </div>
           </div>
         </div>
@@ -83,7 +83,6 @@
                         let h5 = a.querySelector("h5");
                         h5.innerHTML = card["name"];
                         let button = imp.querySelector("button");
-                        console.log(card["id"]);
                         button.onclick = function() { deleteCard(card["id"]); };
                         a.onclick = function() { 
                             fetch("https://api.trello.com/1/cards/" + card["id"] + "?key=d4a5989b18dace3a754d639147cb8ec5&token=" + token).then(response => response.json()).then(card => openModal(card));
@@ -98,12 +97,25 @@
                 }
 
                 function openModal(card){
-                    var modal = new bootstrap.Modal(document.getElementById("cardModal"));
+                    let modal = new bootstrap.Modal(document.getElementById("cardModal"));
+                    setModal(card);
+                    modal.show();
+                }
+
+                function setModal(card){
                     let title = document.getElementById("modalTitle");
                     title.value = card["name"];
                     let description = document.getElementById("modalDescription");
                     description.value = card["desc"];
-                    modal.show();
+                    let button = document.getElementById("modalEdit");
+                    button.onclick = function(){ update(card["id"]) }
+                }
+
+                function update(cardId){
+                    let title = document.getElementById("modalTitle");
+                    let description = document.getElementById("modalDescription");
+                    let id = cardId;
+                    fetch("https://api.trello.com/1/cards/" + id + "?key=d4a5989b18dace3a754d639147cb8ec5&token=" + token + "&name=" + title.value + "&desc=" + description.value, {method: 'PUT'}).then(response => response.json()).then(card => setModal(card));
                 }
     </script>
 </body>

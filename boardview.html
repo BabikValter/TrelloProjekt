@@ -74,13 +74,13 @@
 
                 function fetchData(){
                     document.getElementById("lists").innerHTML = "";
-                    fetch("https://api.trello.com/1/boards/" + tableId + "/lists?key=d4a5989b18dace3a754d639147cb8ec5&token=" + token).then(response => response.json()).then(data => lists(data));
+                    fetch("https://api.trello.com/1/boards/" + tableId + "/lists?key=" + window.localStorage.getItem('key') + "&token=" + token).then(response => response.json()).then(data => lists(data));
                 }
 
                 function addCard(textId){
                     let text = document.getElementById(textId).value;
                     if (text != ""){
-                        fetch("https://api.trello.com/1/cards?key=d4a5989b18dace3a754d639147cb8ec5&token=" + token + "&name=" + text + "&idList=" + textId, {method: "POST"});
+                        fetch("https://api.trello.com/1/cards?key=" + window.localStorage.getItem('key') + "&token=" + token + "&name=" + text + "&idList=" + textId, {method: "POST"});
                         fetchData();
                     }
                     else{
@@ -99,7 +99,7 @@
                         let newCard = imp.querySelector("div.newCardDiv");
                         newCard.querySelector("div>div>input").id = list["id"];
                         newCard.querySelector("button").onclick = function(){ addCard(list["id"]); };
-                        fetch("https://api.trello.com/1/lists/" + list["id"] + "/cards/?key=d4a5989b18dace3a754d639147cb8ec5&token=" + token).then(response => response.json()).then(data => cards(data, imp));
+                        fetch("https://api.trello.com/1/lists/" + list["id"] + "/cards/?key=" + window.localStorage.getItem('key') + "&token=" + token).then(response => response.json()).then(data => cards(data, imp));
                     });
                 }
 
@@ -115,14 +115,14 @@
                         let button = imp.querySelector("button");
                         button.onclick = function() { deleteCard(card["id"]); };
                         a.onclick = function() { 
-                            fetch("https://api.trello.com/1/cards/" + card["id"] + "?key=d4a5989b18dace3a754d639147cb8ec5&token=" + token).then(response => response.json()).then(card => openModal(card));
+                            fetch("https://api.trello.com/1/cards/" + card["id"] + "?key=" + window.localStorage.getItem('key') + "&token=" + token).then(response => response.json()).then(card => openModal(card));
                         };
                         cards.appendChild(imp);
                     });
                 }//itt járt Bálint 8)
 
                 function deleteCard(cardID){
-                    fetch("https://api.trello.com/1/cards/" + cardID + "?key=d4a5989b18dace3a754d639147cb8ec5&token=" + token, {method: 'DELETE'});
+                    fetch("https://api.trello.com/1/cards/" + cardID + "?key=" + window.localStorage.getItem('key') + "&token=" + token, {method: 'DELETE'});
                     fetchData();
                 }
 
@@ -145,7 +145,7 @@
                     let title = document.getElementById("modalTitle");
                     let description = document.getElementById("modalDescription");
                     let id = cardId;
-                    fetch("https://api.trello.com/1/cards/" + id + "?key=d4a5989b18dace3a754d639147cb8ec5&token=" + token + "&name=" + title.value + "&desc=" + description.value, {method: 'PUT'}).then(response => response.json()).then(card => setModal(card));
+                    fetch("https://api.trello.com/1/cards/" + id + "?key=" + window.localStorage.getItem('key') + "&token=" + token + "&name=" + title.value + "&desc=" + description.value, {method: 'PUT'}).then(response => response.json()).then(card => setModal(card));
                 }
 
 
